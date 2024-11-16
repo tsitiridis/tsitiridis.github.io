@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Niko Tsitiridis</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+      background: #000; /* Uniform black background */
+      color: #ffffff;
+    }
+
+    /* Emoji Container with Semi-Transparent Black Overlay */
+    .emoji-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* Disable interaction */
+      z-index: 1;
+    }
+
+    .emoji-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+      z-index: 2;
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.7;
+      animation: float 4s infinite ease-in-out;
+      user-select: none; /* Prevent selection */
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0.7;
+      }
+      50% {
+        transform: translateY(-40px) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0.7;
+      }
+    }
+
+    /* Main Container */
+    .container {
+      position: relative;
+      text-align: center;
+      z-index: 3; /* Ensure it is above emojis and overlay */
+      color: white;
+      max-width: 700px;
+      margin: 100px auto;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #4d79ff, #1e90ff, #4d79ff, #5a67d8);
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: gradientFlow 6s linear infinite;
+    }
+
+    @keyframes gradientFlow {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .quote {
+      font-size: 1.3rem;
+      color: #dddddd;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .author {
+      font-size: 1rem;
+      color: #bbbbbb;
+    }
+
+    /* Buttons */
+    .button {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      background: linear-gradient(135deg, #1e90ff, #5a67d8);
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
+      transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+    .button:hover {
+      background: linear-gradient(135deg, #42a5f5, #7b92ff);
+      box-shadow: 0 8px 20px rgba(66, 165, 245, 0.7);
+      transform: translateY(-3px);
+    }
+
+    footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #fff; /* Ensure bright white color */
+      z-index: 3; /* Bring above the overlay */
+      position: relative; /* Avoid stacking context issues */
+    }
+  </style>
+</head>
+<body>
+  <!-- Emoji Background -->
+  <div class="emoji-container">
+    <div class="emoji-overlay"></div>
+    <div class="emoji-layer"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h1>Niko Tsitiridis</h1>
+    <p id="quote" class="quote"></p>
+    <p id="author" class="author"></p>
+    <a href="https://x.com/tsitiridis" target="_blank" class="button">𝕏</a>
+    <a href="https://bsky.app/profile/tsitiridis" target="_blank" class="button">Bluesky</a>
+    <a href="https://instagram.com/tsitiridis" target="_blank" class="button">Instagram</a>
+    <a href="https://linkedin.com/in/tsitiridis" target="_blank" class="button">LinkedIn</a>
+    <a href="https://github.com/tsitiridis" target="_blank" class="button">GitHub</a>
+    <a href="pgp-key.txt" download class="button">Download PGP Key</a>
+  </div>
+
+  <footer>
+    <p>© <span id="year"></span> Nikolaos Tsitiridis. All rights reserved.</p>
+  </footer>
+
+  <!-- Script for Random Quote and Emojis -->
+  <script>
+    const quotes = [
+      { text: "Success usually comes to those who are too busy to be looking for it.", author: "Henry David Thoreau" },
+      { text: "Don’t be afraid to give up the good to go for the great.", author: "John D. Rockefeller" },
+      { text: "Opportunities don’t happen. You create them.", author: "Chris Grosser" },
+      { text: "If you want to achieve greatness, stop asking for permission.", author: "Anonymous" },
+      { text: "Don’t let yesterday take up too much of today.", author: "Will Rogers" },
+      { text: "The only limit to our realization of tomorrow is our doubts of today.", author: "Franklin D. Roosevelt" },
+      { text: "Act as if what you do makes a difference. It does.", author: "William James" },
+      { text: "Hard work beats talent when talent doesn’t work hard.", author: "Tim Notke" },
+      { text: "The best way to predict the future is to create it.", author: "Abraham Lincoln" },
+      { text: "The harder you work for something, the greater you’ll feel when you achieve it.", author: "Anonymous" },
+      { text: "Success is not in what you have, but who you are.", author: "Bo Bennett" },
+      { text: "Don’t wait. The time will never be just right.", author: "Napoleon Hill" },
+      { text: "Believe in yourself and all that you are.", author: "Christian D. Larson" },
+      { text: "With the new day comes new strength and new thoughts.", author: "Eleanor Roosevelt" },
+      { text: "What you get by achieving your goals is not as important as what you become by achieving your goals.", author: "Zig Ziglar" },
+      { text: "Be not afraid of greatness. Some are born great, some achieve greatness, and others have greatness thrust upon them.", author: "William Shakespeare" },
+      { text: "It always seems impossible until it’s done.", author: "Nelson Mandela" },
+      { text: "Life is what happens when you’re busy making other plans.", author: "John Lennon" },
+      { text: "Keep your face always toward the sunshine—and shadows will fall behind you.", author: "Walt Whitman" },
+      { text: "In the middle of every difficulty lies opportunity.", author: "Albert Einstein" }
+      // Add more quotes to reach 100
+    ];
+
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('quote').textContent = randomQuote.text;
+    document.getElementById('author').textContent = `— ${randomQuote.author}`;
+
+    const emojis = [
+      "😀", "😂", "😎", "🥰", "😇", "🤓", "🦄", "🐉", "🔥", "🌈", "🌍", "⚡", "💎",
+      "🎵", "🎨", "🚀", "🌌", "✨", "🍀", "🎉", "🌞", "🌜", "🌟", "❄️", "🍎",
+      "🍔", "🍕", "🍩", "🏆", "📚", "💡", "🖥️", "📱", "🛠️", "🏠", "🎥", "✈️",
+      "🚗", "⚽", "🏀", "🎮", "🎹", "📷", "🔑", "🧩", "❤️", "💙", "💚", "💛",
+      "💜", "🤍", "🤎", "🖤", "😜", "🙌", "👍", "👑", "🪐", "🛰️", "🌠", "🌅",
+      "🎯", "🎓", "🖌️", "🕹️", "💣", "🧨", "📡", "💸", "💰", "🎵", "🛡️"
+    ];
+
+    const emojiLayer = document.querySelector('.emoji-layer');
+
+    for (let i = 0; i < 72; i++) {
+      const emojiElement = document.createElement('div');
+      emojiElement.className = 'emoji';
+      emojiElement.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      emojiElement.style.top = `${Math.random() * 100}%`;
+      emojiElement.style.left = `${Math.random() * 100}%`;
+      emojiElement.style.animationDelay = `${Math.random() * 4}s`;
+      emojiLayer.appendChild(emojiElement);
+    }
+
+    // Auto-update the year in the footer
+    const yearElement = document.getElementById('year');
+    const currentYear = new Date().getFullYear();
+    yearElement.textContent = currentYear;
+  </script>
+</body>
+</html>
